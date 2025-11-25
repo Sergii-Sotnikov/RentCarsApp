@@ -1,31 +1,31 @@
-import { create } from "zustand";
-import type { NewNote } from "@/types/note";
-import { persist } from "zustand/middleware";
+// import { create } from "zustand";
+// import type { NewNote } from "@/types/car";
+// import { persist } from "zustand/middleware";
 
 
 
-const initialDraft: NewNote = {
-  title: "",
-  content: "",
-  tag: "Todo",
-};
+// const initialDraft: NewNote = {
+//   title: "",
+//   content: "",
+//   tag: "Todo",
+// };
 
-type NoteDraft = {
-  draft: NewNote;
-  setDraft: (newData: NewNote) => void;
-  clearDraft: () => void;
-};
+// type NoteDraft = {
+//   draft: NewNote;
+//   setDraft: (newData: NewNote) => void;
+//   clearDraft: () => void;
+// };
 
-export const useNoteDraft = create<NoteDraft>()(
-  persist((set) => {
-    return {
-      draft: initialDraft,
-      setDraft: (newData: NewNote) => set({ draft: newData }),
-      clearDraft: () => set({ draft: initialDraft }),
-    };
-  }, {
-    name: 'draft',
-  })
-);
+// export const useNoteDraft = create<NoteDraft>()(
+//   persist((set) => {
+//     return {
+//       draft: initialDraft,
+//       setDraft: (newData: NewNote) => set({ draft: newData }),
+//       clearDraft: () => set({ draft: initialDraft }),
+//     };
+//   }, {
+//     name: 'draft',
+//   })
+// );
 
  

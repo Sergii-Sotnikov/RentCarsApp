@@ -1,68 +1,65 @@
-import { User } from "@/types/user";
+
+import { Car, CarsResponse } from "@/types/car";
 import nextServer from "./api";
-import { cookies } from "next/headers";
-import { Note } from "@/types/note";
+import { headers } from "next/headers";
 
-interface NoteHttpResponse {
-  notes: Note[];
-  totalPages: number;
-}
 
-export async function getUserServer(): Promise<User> {
-  const cookieStore = await cookies();
-  console.log(cookieStore)
-  const { data } = await nextServer.get<User>("/users/me", {
-    headers: {
-      Cookie: cookieStore.toString(),
-    },
-  });
-  return data;
-}
 
-export async function getNotesServer(
-  search: string,
-  page: number,
-  tag: string
-): Promise<NoteHttpResponse> {
-  const cookieStore = await cookies();
+
+export async function getCarsServer(
+  brand: string,
+  rentalPrice: string,
+  minMileage: string,
+  maxMileage: string,
+  limit: string,
+  page: string,
+): Promise<CarsResponse> {
 
   const options = {
     params: {
+      brand,
+      rentalPrice,
+      minMileage,
+      maxMileage,
+      limit,
       page,
-      perPage: 12,
-      ...(search && { search }),
-      ...(tag !== "All" && { tag }),
     },
     headers: {
-      Cookie: cookieStore.toString(),
+      accept: 'application/json',
     },
   };
 
-  const { data } = await nextServer.get<NoteHttpResponse>("/notes", options);
-  return data;
-}
-
-export async function fetchNoteByIdServer(noteId: string) {
-  const cookieStore = await cookies();
-  const { data } = await nextServer.get<Note>(`/notes/${noteId}`, {
-    headers: {
-      Cookie: cookieStore.toString(),
-    },
-  });
+  const { data } = await nextServer.get<CarsResponse>("/cars", options);
   return data;
 }
 
 
-export const checkSessionServer = async () => {
-  const cookieStore = await cookies();
-  const res = await nextServer.get('/auth/session', {
-    headers: {
-      Cookie: cookieStore.toString(),
+export async function fetchCarByIdServer(id:string) {
+  const options = {
+    params: {
+      id
     },
-  });
+    headers: {
+      accept: 'application/json',
+    },
+  }
+ const { data } = await nextServer.get<Car>("/cars/", options);
+  return data;
+}
 
-  return res;
-};
+
+// https://car-rental-api.goit.global/cars?brand=volvo&rentalPrice=40&minMileage=0&maxMileage=10000&limit=10&page=1'
+
+// export async function fetchNoteByIdServer(noteId: string) {
+//   const cookieStore = await cookies();
+//   const { data } = await nextServer.get<Note>(`/notes/${noteId}`, {
+//     headers: {
+//       Cookie: cookieStore.toString(),
+//     },
+//   });
+//   return data;
+// }
+
 
 
 
