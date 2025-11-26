@@ -28,4 +28,14 @@
 //   })
 // );
 
- 
+ import { CatalogFilters } from "@/types/car";
+import { create } from "zustand";
+
+type FilterKey = keyof CatalogFilters;
+type FilterValue = CatalogFilters[FilterKey];
+
+type CatalogFiltersState = {
+  filters: CatalogFilters;
+  setFilters: (filters: CatalogFilters) => void;
+  updateFilter: (key: FilterKey, value: FilterValue) => void;
+};

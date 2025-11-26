@@ -5,6 +5,7 @@ import nextServer from "./api";
 
 export async function fetchNoteByIdUser(id:string) {
   const {data}= await nextServer.get<Car>(`/cars/${id}`)
+  console.log(data)
   return data
 }
 

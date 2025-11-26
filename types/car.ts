@@ -54,3 +54,10 @@ export interface CarsResponse {
   totalPages: number;
 }
 
+export type CatalogFilters = {
+  brand?: string;
+  rentalPrice?: number;
+  minMileage?: number;
+  maxMileage?: number;
+};
+
