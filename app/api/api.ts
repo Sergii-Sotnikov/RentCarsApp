@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-export const api = axios.create({
+export const NextServer = axios.create({
   baseURL: 'https://car-rental-api.goit.global',
-  withCredentials: true,
 });
+
+
+
