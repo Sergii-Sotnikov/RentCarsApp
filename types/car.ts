@@ -2,28 +2,7 @@ export type Accessories = string[];
 export type Functionalities = string[];
 export type RentalConditions = string[];
 
-export type Brand =
-  | 'Aston Martin'
-  | 'Audi'
-  | 'BMW'
-  | 'Bentley'
-  | 'Buick'
-  | 'Chevrolet'
-  | 'Chrysler'
-  | 'GMC'
-  | 'HUMMER'
-  | 'Hyundai'
-  | 'Kia'
-  | 'Lamborghini'
-  | 'Land Rover'
-  | 'Lincoln'
-  | 'MINI'
-  | 'Mercedes-Benz'
-  | 'Mitsubishi'
-  | 'Nissan'
-  | 'Pontiac'
-  | 'Subaru'
-  | 'Volvo';
+export type Brand = string
 
 export type BrandsResponse = Brand[];
 
@@ -60,4 +39,6 @@ export type CatalogFilters = {
   minMileage?: number;
   maxMileage?: number;
 };
+
+
 

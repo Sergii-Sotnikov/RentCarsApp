@@ -1,7 +1,8 @@
 
-import { NextServer } from "@/app/api/api";
-import { Car, CarsResponse } from "@/types/car";
-import { headers } from "next/headers";
+import { ServerApi } from "@/app/api/api";
+import { BrandsResponse, CarsResponse } from "@/types/car";
+
+
 
 export type GetCarsParams = {
   brand?: string;
@@ -15,14 +16,14 @@ export type GetCarsParams = {
 
 export async function getCarsServer(params: GetCarsParams): Promise<CarsResponse> {
 
-  const {brand, rentalPrice, minMileage, maxMileage, page, limit} = params;
+  const {brand, rentalPrice, minMileage, maxMileage, page, limit = 12} = params;
   const options = {
     params: {
       ...(brand && { brand }),
       ...(rentalPrice !== undefined && { rentalPrice }),
       ...(minMileage !== undefined && { minMileage }),
       ...(maxMileage !== undefined && { maxMileage }),
-      limit: limit,
+      limit,
       page,
     },
     headers: {
@@ -30,22 +31,14 @@ export async function getCarsServer(params: GetCarsParams): Promise<CarsResponse
     },
   };
 
-  const { data } = await NextServer.get<CarsResponse>("/cars", options);
+  const { data } = await ServerApi.get<CarsResponse>("/api/cars", options);
   return data;
 }
 
 
-export async function fetchCarByIdServer(id:string) {
-  const options = {
-    params: {
-      id
-    },
-    headers: {
-      accept: 'application/json',
-    },
-  }
- const { data } = await NextServer.get<Car>("/cars/", options);
-  return data;
+export async function getBrandsServer() {
+  const {data} = await ServerApi.get<BrandsResponse>("/api/brands");
+  return data
 }
 
 

@@ -1,6 +1,6 @@
-import { getCarsServer } from "@/lib/api/serverApi";
-import getQueryClient from "@/lib/queryClient/getQueryClient";
-import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
+import { getBrandsServer, getCarsServer } from "@/lib/api/serverApi";
+import CatalogClient from "@/components/CatalogClient/CatalogClient";
+import FiltersSidebar from "@/components/FiltersSidebar/FiltersSidebar";
 
 type CatalogSearchParams = {
   brand?: string;
@@ -11,29 +11,37 @@ type CatalogSearchParams = {
 };
 
 type CatalogProps = {
-  searchParams: Promise<CatalogSearchParams>;
+  searchParams: CatalogSearchParams;
 };
 
 export default async function Catalog({ searchParams }: CatalogProps) {
-  const queryClient = getQueryClient();
+  const { brand, rentalPrice, minMileage, maxMileage, page } = searchParams;
 
-  const {brand, rentalPrice ,minMileage, maxMileage, page} = await searchParams;
   const filters = {
     brand: brand || undefined,
     rentalPrice: rentalPrice ? Number(rentalPrice) : undefined,
     minMileage: minMileage ? Number(minMileage) : undefined,
     maxMileage: maxMileage ? Number(maxMileage) : undefined,
-    page: page ? Number(page) : 1,
   };
 
-  await queryClient.prefetchQuery({
-    queryKey: ["cars", { ...filters, page: 1 }],
-    queryFn: () => getCarsServer({ ...filters, page: 1, limit: 12}),
+  const currentPage = page ? Number(page) : 1;
+
+  const firstPage = await getCarsServer({
+    ...filters,
+    page: currentPage,
+    limit: 12,
   });
 
+  const brands = await getBrandsServer();
+
   return (
-        <HydrationBoundary state={dehydrate(queryClient)}>
-      {/* <CatalogClient initialFilters={filters} /> */}
-    </HydrationBoundary>
+    <>
+      <FiltersSidebar brandsOptions={brands} />
+      <CatalogClient
+        initialFilters={filters}
+        initialPage={firstPage}
+        brandsOptions={brands}
+      />
+    </>
   );
 }
