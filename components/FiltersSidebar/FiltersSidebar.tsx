@@ -20,15 +20,14 @@ type FiltersSidebarProps = {
 };
 
 const priceOptions = ["30", "40", "50", "60", "70", "80"];
+const allBrands = 'all'
 
 export default function FiltersSidebar({ brandsOptions }: FiltersSidebarProps) {
   const filters = useCatalogStore(state => state.filters);
   const setFilters = useCatalogStore(state => state.setFilters);
-  const resetCars = useCatalogStore(state => state.resetCars);
 
-  // Локальный стейт фильтров (то, что пользователь набирает в форме)
-  const [brand, setBrand] = React.useState<string | undefined>(
-    filters.brand ?? undefined
+  const [brand, setBrand] = React.useState<string>(
+    filters.brand ?? allBrands
   );
   const [price, setPrice] = React.useState<string | undefined>(
     filters.rentalPrice !== undefined ? String(filters.rentalPrice) : undefined
@@ -46,7 +45,7 @@ export default function FiltersSidebar({ brandsOptions }: FiltersSidebarProps) {
     const maxMileageNum = maxMileage ? Number(maxMileage) : undefined;
 
     setFilters({
-      brand: brand || undefined,
+      brand: brand === allBrands ? undefined : brand,
       rentalPrice: Number.isNaN(rentalPriceNum) ? undefined : rentalPriceNum,
       minMileage: Number.isNaN(minMileageNum) ? undefined : minMileageNum,
       maxMileage: Number.isNaN(maxMileageNum) ? undefined : maxMileageNum,
@@ -55,7 +54,6 @@ export default function FiltersSidebar({ brandsOptions }: FiltersSidebarProps) {
 
   return (
     <aside className="flex flex-row gap-4 items-end">
-      {/* Car brand */}
       <div className="flex flex-col gap-2">
         <label className="text-sm font-medium text-foreground">
           Car brand
@@ -68,6 +66,7 @@ export default function FiltersSidebar({ brandsOptions }: FiltersSidebarProps) {
             <SelectValue placeholder="Choose a brand" />
           </SelectTrigger>
           <SelectContent>
+          <SelectItem value={allBrands}>All brands</SelectItem>
             <SelectGroup>
               {brandsOptions.map((b) => (
                 <SelectItem key={b} value={b}>
