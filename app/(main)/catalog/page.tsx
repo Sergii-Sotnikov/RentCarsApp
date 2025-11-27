@@ -11,11 +11,10 @@ type CatalogSearchParams = {
 };
 
 type CatalogProps = {
-  searchParams: CatalogSearchParams;
+  searchParams: Promise<CatalogSearchParams>;
 };
-
 export default async function Catalog({ searchParams }: CatalogProps) {
-  const { brand, rentalPrice, minMileage, maxMileage, page } = searchParams;
+  const { brand, rentalPrice, minMileage, maxMileage, page } = await searchParams;
 
   const filters = {
     brand: brand || undefined,
@@ -32,15 +31,12 @@ export default async function Catalog({ searchParams }: CatalogProps) {
     limit: 12,
   });
 
-  const brands = await getBrandsServer();
 
   return (
     <>
-      <FiltersSidebar brandsOptions={brands} />
       <CatalogClient
         initialFilters={filters}
         initialPage={firstPage}
-        brandsOptions={brands}
       />
     </>
   );

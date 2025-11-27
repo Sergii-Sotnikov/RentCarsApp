@@ -34,7 +34,6 @@ export const useCatalogStore = create<CatalogState>()(
       setFilters: (filters) =>
         set((state) => ({
           filters: { ...state.filters, ...filters },
-          cars: [],
         })),
 
       // скидання усіх фільтрів

@@ -1,22 +1,28 @@
 "use client";
 
-import { useEffect, ChangeEvent } from "react";
-import type { CatalogFilters, CarsResponse, Car, BrandsResponse } from "@/types/car";
+import { useEffect } from "react";
+import type {
+  CatalogFilters,
+  CarsResponse,
+  Car,
+} from "@/types/car";
 import { useCatalogStore } from "@/lib/store/catalogStore";
 import { useCarsInfinite } from "@/lib/hooks/useCarsInfinite";
 
 type CatalogClientProps = {
-  initialFilters: CatalogFilters,
+  initialFilters: CatalogFilters;
   initialPage?: CarsResponse;
-  brandsOptions: BrandsResponse;
 };
 
-export default function CatalogClient({ initialFilters, initialPage, brandsOptions }: CatalogClientProps) {
-  const filters = useCatalogStore(state => state.filters);
-  const cars = useCatalogStore(state => state.cars);
-  const favoritesCars = useCatalogStore(state => state.favoritesCars);
-  const setFilters = useCatalogStore(state => state.setFilters);
-  const toggleFavorite = useCatalogStore(state => state.toggleFavorite);
+export default function CatalogClient({
+  initialFilters,
+  initialPage,
+}: CatalogClientProps) {
+  const filters = useCatalogStore((state) => state.filters);
+  const cars = useCatalogStore((state) => state.cars);
+  const favoritesCars = useCatalogStore((state) => state.favoritesCars);
+  const setFilters = useCatalogStore((state) => state.setFilters);
+  const toggleFavorite = useCatalogStore((state) => state.toggleFavorite);
 
   useEffect(() => {
     setFilters(initialFilters);
@@ -29,6 +35,7 @@ export default function CatalogClient({ initialFilters, initialPage, brandsOptio
   ]);
 
   const {
+    data,
     isLoading,
     isError,
     error,
@@ -38,7 +45,6 @@ export default function CatalogClient({ initialFilters, initialPage, brandsOptio
     isFetching,
   } = useCarsInfinite(initialPage, initialFilters);
 
-
   if (isError) {
     return (
       <p style={{ color: "red" }}>
@@ -47,15 +53,22 @@ export default function CatalogClient({ initialFilters, initialPage, brandsOptio
     );
   }
 
+  // Первый заход: нет машин и идёт загрузка → показываем лоадер
   if (isLoading && cars.length === 0) {
     return <p>Завантаження автомобілів…</p>;
   }
 
+  // Корректная проверка "ничего не найдено":
+  // только если запрос уже завершился и в data реально нет машин
+  const noCarsFound =
+    !isLoading &&
+    data &&
+    data.pages.every((page) => page.cars.length === 0);
 
   return (
     <section>
       {/* ===== СПИСОК АВТО ===== */}
-      {cars.length === 0 && !isLoading && (
+      {noCarsFound && (
         <p>За обраними фільтрами авто не знайдено.</p>
       )}
 
@@ -96,7 +109,6 @@ export default function CatalogClient({ initialFilters, initialPage, brandsOptio
               <p style={{ margin: 0, fontWeight: 600 }}>
                 Ціна: {car.rentalPrice} / доба
               </p>
-
               <button
                 type="button"
                 onClick={() => toggleFavorite(car.id)}
@@ -146,7 +158,9 @@ export default function CatalogClient({ initialFilters, initialPage, brandsOptio
         )}
 
         {isFetching && !isFetchingNextPage && (
-          <p style={{ marginTop: 8, color: "#777" }}>Оновлення даних…</p>
+          <p style={{ marginTop: 8, color: "#777" }}>
+            Оновлення даних…
+          </p>
         )}
       </div>
     </section>

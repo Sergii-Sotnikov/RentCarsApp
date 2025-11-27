@@ -1,7 +1,7 @@
 "use client";
 
 import { GetCarsParams } from "./serverApi";
-import { CarsResponse } from "@/types/car";
+import { Car, CarsResponse } from "@/types/car";
 import { apiClient } from "./api";
 
 
@@ -26,3 +26,8 @@ export async function getCarsClient(params: GetCarsParams): Promise<CarsResponse
   return data;
 }
 
+
+export async function getCarByIdClient(id:string) {
+ const { data } = await apiClient.get<Car>(`/cars/${id}`);
+return data;
+}

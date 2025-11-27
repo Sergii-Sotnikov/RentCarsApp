@@ -51,8 +51,6 @@ export default function FiltersSidebar({ brandsOptions }: FiltersSidebarProps) {
       minMileage: Number.isNaN(minMileageNum) ? undefined : minMileageNum,
       maxMileage: Number.isNaN(maxMileageNum) ? undefined : maxMileageNum,
     });
-
-    resetCars();
   };
 
   return (

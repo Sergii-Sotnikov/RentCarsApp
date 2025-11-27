@@ -1,6 +1,6 @@
 
 import { ServerApi } from "@/app/api/api";
-import { BrandsResponse, CarsResponse } from "@/types/car";
+import { BrandsResponse, Car, CarsResponse } from "@/types/car";
 
 
 
@@ -35,24 +35,16 @@ export async function getCarsServer(params: GetCarsParams): Promise<CarsResponse
   return data;
 }
 
-
 export async function getBrandsServer() {
   const {data} = await ServerApi.get<BrandsResponse>("/api/brands");
   return data
 }
 
 
-// https://car-rental-api.goit.global/cars?brand=volvo&rentalPrice=40&minMileage=0&maxMileage=10000&limit=10&page=1'
-
-// export async function fetchNoteByIdServer(noteId: string) {
-//   const cookieStore = await cookies();
-//   const { data } = await nextServer.get<Note>(`/notes/${noteId}`, {
-//     headers: {
-//       Cookie: cookieStore.toString(),
-//     },
-//   });
-//   return data;
-// }
+export async function getCarByIdServer(id: string) {
+  const { data } = await ServerApi.get<Car>(`/api/cars/${id}`)
+  return data;
+}
 
 
 
