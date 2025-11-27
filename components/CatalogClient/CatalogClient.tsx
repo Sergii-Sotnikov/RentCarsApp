@@ -36,7 +36,7 @@ export default function CatalogClient({ initialFilters, initialPage, brandsOptio
     hasNextPage,
     isFetchingNextPage,
     isFetching,
-  } = useCarsInfinite(initialPage);
+  } = useCarsInfinite(initialPage, initialFilters);
 
 
   if (isError) {

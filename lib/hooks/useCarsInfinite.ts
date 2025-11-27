@@ -1,12 +1,23 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getCarsClient } from "../api/clientApi";
 import { useCatalogStore } from "../store/catalogStore";
-import { CarsResponse } from "@/types/car";
+import { CarsResponse, CatalogFilters } from "@/types/car";
 import { useEffect } from "react";
 
-export function useCarsInfinite(initialPage?: CarsResponse) {
+export function useCarsInfinite(
+  initialPage?: CarsResponse,
+  initialFilters?: CatalogFilters
+) {
   const { filters, setCars } = useCatalogStore();
   const { brand, rentalPrice, minMileage, maxMileage } = filters;
+
+ 
+  const isInitialFilters =
+    initialFilters &&
+    initialFilters.brand === brand &&
+    initialFilters.rentalPrice === rentalPrice &&
+    initialFilters.minMileage === minMileage &&
+    initialFilters.maxMileage === maxMileage;
 
   const query = useInfiniteQuery<CarsResponse>({
     queryKey: ["cars", { brand, rentalPrice, minMileage, maxMileage }],
@@ -20,18 +31,17 @@ export function useCarsInfinite(initialPage?: CarsResponse) {
         limit: 12,
       }),
     initialPageParam: 1,
-    initialData: initialPage
-      ? {
-          pages: [initialPage],
-          pageParams: [1],
-        }
-      : undefined,
-
-    getNextPageParam: (lastPage, allPages, lastPageParam) => {
+    initialData:
+      isInitialFilters && initialPage
+        ? {
+            pages: [initialPage],
+            pageParams: [1],
+          }
+        : undefined,
+    getNextPageParam: (lastPage, _allPages, lastPageParam) => {
       const currentPage = (lastPageParam as number) ?? 1;
       if (currentPage >= lastPage.totalPages) return undefined;
-
-      return currentPage + 1; // 1 -> 2 -> 3 -> ...
+      return currentPage + 1;
     },
   });
 
