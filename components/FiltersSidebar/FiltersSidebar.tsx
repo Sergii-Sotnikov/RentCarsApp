@@ -1,5 +1,6 @@
 "use client";
 
+import css from "./FiltersSidebar.module.css";
 import * as React from "react";
 import {
   Select,
@@ -9,7 +10,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 import { BrandsResponse } from "@/types/car";
@@ -20,15 +20,14 @@ type FiltersSidebarProps = {
 };
 
 const priceOptions = ["30", "40", "50", "60", "70", "80"];
-const allBrands = 'all'
+
 
 export default function FiltersSidebar({ brandsOptions }: FiltersSidebarProps) {
-  const filters = useCatalogStore(state => state.filters);
-  const setFilters = useCatalogStore(state => state.setFilters);
+  const filters = useCatalogStore((state) => state.filters);
+  const setFilters = useCatalogStore((state) => state.setFilters);
 
-  const [brand, setBrand] = React.useState<string>(
-    filters.brand ?? allBrands
-  );
+  // если в сторе бренда ещё нет — держим пустую строку
+  const [brand, setBrand] = React.useState<string>(filters.brand ?? "");
   const [price, setPrice] = React.useState<string | undefined>(
     filters.rentalPrice !== undefined ? String(filters.rentalPrice) : undefined
   );
@@ -39,13 +38,17 @@ export default function FiltersSidebar({ brandsOptions }: FiltersSidebarProps) {
     filters.maxMileage !== undefined ? String(filters.maxMileage) : ""
   );
 
+  const formatNumber = (value: string) =>
+    value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
   const handleSearch = () => {
     const rentalPriceNum = price ? Number(price) : undefined;
     const minMileageNum = minMileage ? Number(minMileage) : undefined;
     const maxMileageNum = maxMileage ? Number(maxMileage) : undefined;
 
     setFilters({
-      brand: brand === allBrands ? undefined : brand,
+      // если бренд не выбран (""), кладём undefined
+      brand: brand || undefined,
       rentalPrice: Number.isNaN(rentalPriceNum) ? undefined : rentalPriceNum,
       minMileage: Number.isNaN(minMileageNum) ? undefined : minMileageNum,
       maxMileage: Number.isNaN(maxMileageNum) ? undefined : maxMileageNum,
@@ -53,24 +56,29 @@ export default function FiltersSidebar({ brandsOptions }: FiltersSidebarProps) {
   };
 
   return (
-    <aside className="flex flex-row gap-4 items-end">
-      <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-foreground">
-          Car brand
-        </label>
+    <aside className={css.filter}>
+ 
+      <div className={css.select}>
+        <label className={css.label}>Car brand</label>
         <Select
-          value={brand}
-          onValueChange={value => setBrand(value)}
+          defaultValue={undefined}
+          onValueChange={(value) => setBrand(value)}
         >
-          <SelectTrigger className="w-[280px]">
-            <SelectValue placeholder="Choose a brand" />
+          <SelectTrigger className={css.selectTrigger}>
+            <SelectValue
+              className={css.placeholder}
+              placeholder="Choose a brand"
+            />
           </SelectTrigger>
-          <SelectContent>
-          <SelectItem value={allBrands}>All brands</SelectItem>
+          <SelectContent className={css.selectContent}>
             <SelectGroup>
-              {brandsOptions.map((b) => (
-                <SelectItem key={b} value={b}>
-                  {b}
+              {brandsOptions.map((brandOption) => (
+                <SelectItem
+                  key={brandOption}
+                  value={brandOption}
+                  className={css.item}
+                >
+                  {brandOption}
                 </SelectItem>
               ))}
             </SelectGroup>
@@ -78,23 +86,27 @@ export default function FiltersSidebar({ brandsOptions }: FiltersSidebarProps) {
         </Select>
       </div>
 
-      {/* Price / 1 hour */}
-      <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-foreground">
-          Price / 1 hour
-        </label>
-        <Select
-          value={price}
-          onValueChange={value => setPrice(value)}
-        >
-          <SelectTrigger className="w-[200px]">
-            <SelectValue placeholder="To $40" />
+  
+      <div className={css.select}>
+        <label className={css.label}>Price / 1 hour</label>
+
+        <Select value={price} onValueChange={(value) => setPrice(value)}>
+          <SelectTrigger
+            className={`${css.selectTrigger} ${css.selectTriggerPrice}`}
+          >
+            <span className={css.placeholder}>
+              {price ? `To $${price}` : "Choose a price"}
+            </span>
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent className={css.selectContentPrice}>
             <SelectGroup>
-              {priceOptions.map(price => (
-                <SelectItem key={price} value={price}>
-                  {price}
+              {priceOptions.map((priceOption) => (
+                <SelectItem
+                  key={priceOption}
+                  value={priceOption}
+                  className={css.item}
+                >
+                  {priceOption}
                 </SelectItem>
               ))}
             </SelectGroup>
@@ -102,35 +114,30 @@ export default function FiltersSidebar({ brandsOptions }: FiltersSidebarProps) {
         </Select>
       </div>
 
-      {/* Car mileage / km */}
-      <div className="flex flex-col gap-2">
-        <label className="text-sm font-medium text-foreground">
-          Car mileage / km
-        </label>
-        <div className="flex gap-2">
-          <Input
-            className="w-[150px]"
-            placeholder="From 3,000"
-            inputMode="numeric"
-            value={minMileage}
-            onChange={e => setMinMileage(e.target.value)}
-          />
-          <Input
-            className="w-[150px]"
-            placeholder="To 5,500"
-            inputMode="numeric"
-            value={maxMileage}
-            onChange={e => setMaxMileage(e.target.value)}
-          />
-        </div>
-      </div>
+   
+<div className={css.twoInput}>
+  <label className={css.label}>Car mileage / km</label>
 
-      {/* Search button */}
-      <Button
-        type="button"
-        className="h-[52px] px-8"
-        onClick={handleSearch}
-      >
+  <div className={css.mileageGroup}>
+    <input
+      type="text"
+      placeholder="From"
+      className={css.mileageInputLeft}
+      value={minMileage ? `From ${formatNumber(minMileage)}` : ""}
+      onChange={(e) => setMinMileage(e.target.value.replace(/\D/g, ""))}
+    />
+
+    <input
+      type="text"
+      placeholder="To"
+      className={css.mileageInputRight}
+      value={maxMileage ? `To ${formatNumber(maxMileage)}` : ""}
+      onChange={(e) => setMaxMileage(e.target.value.replace(/\D/g, ""))}
+    />
+  </div>
+</div>
+
+      <Button type="button" className={css.button} onClick={handleSearch}>
         Search
       </Button>
     </aside>

@@ -46,7 +46,7 @@ export default function CarsList({
               }}
             >
               <Link
-                href={`/catalog/${car.id}`} // если у тебя роут /catalog/[id]
+                href={`/cars/${car.id}`}
                 style={{
                   textDecoration: "none",
                   color: "inherit",

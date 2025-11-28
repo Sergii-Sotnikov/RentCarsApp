@@ -5,12 +5,11 @@
 @tailwind utilities;
 
 body {
-  font-family: var(--font-roboto), sans-serif;
+  font-family: var(--font-manrope), sans-serif;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   margin: 0;
-  background-color: #f8f9fa;
 }
 
 @theme inline {

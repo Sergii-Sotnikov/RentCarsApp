@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import css from "./catalog.module.css"
 
 type CatalogLayoutProps = {
   children: ReactNode;
@@ -7,8 +8,8 @@ type CatalogLayoutProps = {
 
 export default function CatalogLayout({ children, filters }: CatalogLayoutProps) {
   return (
-    <section className="flex flex-col gap-6">
-      <div className="shrink-0">
+    <section className={css.catalog}>
+      <div>
         {filters}
       </div>
       <div className="flex-1">

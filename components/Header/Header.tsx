@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import css from "./Header.module.css";
 import Image from "next/image";
@@ -8,13 +9,13 @@ const Header = () => {
     <header className={css.header}>
       <div className={css.container}>
         <Link className={css.linkLogo} href="/">
-          <Image src={logo} className={css.logo} alt="Logo" />
+          <Image src={logo} className={css.logo} alt="Logo" width={104} height={16}/>
         </Link>
         <nav className={css.nav}>
-          <Link href="/" className={css.navElem}>
+          <Link href="/" className={css.navElemFirst}>
             Home
           </Link>
-          <Link href="/catalog" className={css.navElem}>
+          <Link href="/catalog" className={css.navElemSecond}>
             Catalog
           </Link>
         </nav>
