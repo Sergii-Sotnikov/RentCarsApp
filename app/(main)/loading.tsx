@@ -1,9 +1,5 @@
+import LoaderPage from "@/components/LoaderPage/LoaderPage";
 
-
-const Loading = () => {
-    return(
-        <p>Loading, please wait...</p>
-    )
+export default function LoadingMainSegment() {
+  return <LoaderPage />;
 }
-
-export default Loading;

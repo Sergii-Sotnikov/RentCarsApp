@@ -1,0 +1,13 @@
+.list {
+  margin: 0 auto 80px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 48px 32px;
+  justify-content: flex-start;
+}
+
+.placeholder {
+  width: calc((100% - 32px * 3) / 4);
+  height: 0; 
+  visibility: hidden; 
+}

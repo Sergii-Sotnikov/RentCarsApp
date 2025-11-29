@@ -30,7 +30,7 @@ export const useCatalogStore = create<CatalogState>()(
       cars: [],
       favoritesCars: [],
 
-      // фільтри (групове оновлення)
+      // фільтри 
       setFilters: (filters) =>
         set((state) => ({
           filters: { ...state.filters, ...filters },

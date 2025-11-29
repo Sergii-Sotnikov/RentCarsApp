@@ -1,6 +1,6 @@
-import { getBrandsServer, getCarsServer } from "@/lib/api/serverApi";
+import { getCarsServer } from "@/lib/api/serverApi";
 import CatalogClient from "@/components/CatalogClient/CatalogClient";
-import FiltersSidebar from "@/components/FiltersSidebar/FiltersSidebar";
+
 
 type CatalogSearchParams = {
   brand?: string;

@@ -6,6 +6,8 @@ import { useCatalogStore } from "@/lib/store/catalogStore";
 import { useCarsInfinite } from "@/lib/hooks/useCarsInfinite";
 import CarsList from "../CarsList/CarsList";
 import LoadMoreSection from "../LoadMoreSection/LoadMoreSection";
+import css from "./CatalogClient.module.css"
+import CarsSkeleton from "../CarsSkeleton/CarsSkeleton";
 
 
 type CatalogClientProps = {
@@ -45,15 +47,22 @@ export default function CatalogClient({
     );
   }
 
-  if (isLoading && cars.length === 0) {
-    return <p>Завантаження автомобілів…</p>;
-  }
+if ((isLoading || isFetching) && cars.length === 0) {
+  return (
+    <section className={css.catalogClient}>
+      <div className={css.container}>
+         <CarsSkeleton count={12} />
+      </div>
+    </section>
+  );
+}
 
   const noCarsFound =
     !isLoading && data && data.pages.every((page) => page.cars.length === 0);
 
   return (
-    <section>
+    <section className={css.catalogClient}>
+      <div className={css.container}>
       <CarsList
         cars={cars}
         favoritesCars={favoritesCars}
@@ -68,6 +77,7 @@ export default function CatalogClient({
         hasCars={cars.length > 0}
         onFetchNextPage={fetchNextPage}
       />
+      </div>
     </section>
   );
 }

@@ -1,0 +1,135 @@
+.item {
+  position: relative;
+  width: calc((100% - 32px * 3) / 4);
+  height: 424px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+}
+
+.imgWrapper {
+  position: relative;
+  width: 100%;
+  height: 268px;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.title {
+  display: flex;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  color: var(--color-dark);
+  margin-bottom: 8px;
+}
+
+.title span {
+  display: block;
+}
+
+.title span.carModel {
+  color: var(--color-primary);
+  margin-left: 4px;
+}
+
+.title span.carYear {
+  margin-left: 4px;
+}
+
+.title span.carPrice {
+  margin-left: auto;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 28px;
+}
+
+.location,
+.typeMileage,
+.type,
+.mileage {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.33333;
+}
+
+.location {
+  opacity: 0.8;
+}
+
+.type {
+  position: relative;
+}
+
+.type::after {
+  content: "";
+  position: absolute;
+  right: -6px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1px;
+  height: 10px;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.readMoreLink {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+  border: none;
+  padding: 12px 0;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.25;
+  text-decoration: none;
+  text-align: center;
+  display: block;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.readMoreLink:hover {
+  background-color: var(--color-primary-dark);
+}
+
+.favoritesBtn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background-color: transparent;
+  border: none;
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+.favoritesBtn:hover {
+  transform: scale(1.1);
+}
+
+.iconFavorites,
+.iconFavoritesActive {
+  width: 100%;
+  height: 100%;
+  transition: fill 0.2s ease;
+}
+
+.iconFavorites {
+  fill: var(--color-white);
+}
+
+.iconFavoritesActive {
+  fill: var(--color-primary);
+}
+
+.hidden {
+  display: none;
+}

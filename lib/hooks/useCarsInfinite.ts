@@ -1,4 +1,4 @@
-import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { getCarsClient } from "../api/clientApi";
 import { useCatalogStore } from "../store/catalogStore";
 import { CarsResponse, CatalogFilters } from "@/types/car";
@@ -11,7 +11,6 @@ export function useCarsInfinite(
   const { filters, setCars } = useCatalogStore();
   const { brand, rentalPrice, minMileage, maxMileage } = filters;
 
- 
   const isInitialFilters =
     initialFilters &&
     initialFilters.brand === brand &&
@@ -38,7 +37,6 @@ export function useCarsInfinite(
             pageParams: [1],
           }
         : undefined,
-          placeholderData:keepPreviousData,
     getNextPageParam: (lastPage, _allPages, lastPageParam) => {
       const currentPage = (lastPageParam as number) ?? 1;
       if (currentPage >= lastPage.totalPages) return undefined;
